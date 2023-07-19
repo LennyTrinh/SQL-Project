@@ -79,8 +79,6 @@ United States: 13,222.16 USD
 Israel: 602.00 USD
 Australia: 358.00 USD
 
-Method:
-
 ### Self-Made Questions
 
 ### Question 1. How many page views on average do visitors look at between visitors that buy something and visitors that don't?
