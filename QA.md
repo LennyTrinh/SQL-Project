@@ -16,11 +16,11 @@ Below is my QA process and the SQL queries used to execute it.
 #Quality control 20% of the answers for accuracy. For this project, I will verify 2/9 (22%) of the answers.
 
 ### In starting_with_questions.md - Question 3, there were 81 transactions. 77 of those transactions were from the United States and each of the other 4 countries listed only had one transaction. Let's verify if that's actually true. 
-
+```
 SELECT *
 FROM all_sessionso
 WHERE transactions IS NOT NULL AND country IN('Canada', 'Israel', 'Australia', 'Switzerland')
-
+```
 #Result: It's true, Canada, Israel, Australia, and Switzerland only had one transaction.
 
 
@@ -29,42 +29,42 @@ WHERE transactions IS NOT NULL AND country IN('Canada', 'Israel', 'Australia', '
 ### In starting_with_data.md Question 4, the answer was 0.57% of visitors actually bought. That number seems awfully low. Let's verify it.
 
 #Step 1: Calculate the number of distinct visitors.
-
+```
 Select count(distinct fullvisitorid)
 FROM all_sessionso
-
+```
 #Result: There are 14223 distinct visitors.
 
 #Step 2: Calculate the number of transactions
-
+```
 SELECT COUNT(transactions)
 FROM all_sessionso
-
+```
 #Results: 81 transaction
 
 #81/14223 * 100% = 0.5695%. Therefore 0.57% is an accurate calculation.
 #One should also account that 1 visitor can make multiple transactions.
 
 #Step 3: Check if there is multiple fullvisitorid that made an order (transaction = 1)
-
+```
 SELECT fullvisitorid
 FROM all_sessionso
 WHERE transactions IS NOT NULL
 GROUP BY fullvisitorid
 HAVING COUNT(fullvisitorid) > 1
-
+```
 #Result: The query returns fullvisitorid 3764227345226401562
 
 #Step 4: Find out if the products purchased was a duplicate or whether the visitor ordered different products.
-
+```
 SELECT *
 FROM all_sessionso
 WHERE transactions IS NOT NULL AND fullvisitorid = 3764227345226401562
-
+```
 #Result: Visitor (fullvisitorid = 3764227345226401562) ordered two products. They ordered "Nest® Cam Indoor Security Camera - USA" AND "Nest® Learning Thermostat 3rd Gen-USA" on the same visit on 2017-03-20.
 
 STEP: 5 - calculate the true transactions from distinct visitors.
-
+```
 SELECT COUNT(*)
 FROM
 (SELECT COUNT(transactions)
@@ -72,7 +72,7 @@ FROM all_sessionso
 WHERE transactions IS NOT NULL
 GROUP BY fullvisitorid
 HAVING COUNT(fullvisitorid) >0) subquery
-
+```
 #Result: There are 80 transactions from distinct visitors.
 
 STEP 6: Get the correct "percentage of distinct visitors to the website actually make a purchase."
