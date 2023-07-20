@@ -9,7 +9,7 @@ What are your risk areas? Identify and describe them.
 8) In the default all_sessions table, there were v2productcategories that were not useful (ex. "(Not Set)" or gibberish). Those categories were filled in with the most reasonable product categories based on their product name or other rows' v2productcategory that had the same v2productname.
 
 
-QA Process:
+## QA Process:
 
 Below is my QA process and the SQL queries used to execute it.
 
@@ -75,7 +75,7 @@ HAVING COUNT(fullvisitorid) >0) subquery
 
 STEP 6: Get the correct "percentage of distinct visitors to the website actually make a purchase."
 
-# 80/14223 * 100% = 56%
+#80/14223 * 100% = 56%
 
 #Result: Therefore, 0.56% of distinct visitors made a transaction.
 
