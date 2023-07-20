@@ -62,3 +62,19 @@ FROM all_sessionso) AS subquery;
 
 Answer: 0.57% of distinct visitors to the website made a purchase.
 
+## Update Question 4##
+#As of 7/19/2023, after the QA process, I discovered that there was one visitor who made two transactions. Below is my updated answer and query for Question 4.
+
+SQL Queries:
+#Method using 1) Nested Subquery to find correctedtransactioncount 2) Subquery to get num_distinct_visitors
+
+SELECT CAST(
+(SELECT COUNT(*) FROM (SELECT COUNT(transactions) FROM all_sessionso WHERE transactions IS NOT NULL GROUP BY fullvisitorid
+HAVING COUNT(fullvisitorid) >0) correctedtransactioncount) 
+AS FLOAT) / num_distinct_visitors * 100 AS distinct_visitors_that_bought_as_percent
+FROM
+(SELECT COUNT(DISTINCT all_sessionso.fullvisitorid) AS num_distinct_visitors
+FROM all_sessionso) AS subquery1;
+
+Updated Answer: 0.56% of distinct visitors to the website made a purchase.
+
