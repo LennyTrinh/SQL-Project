@@ -26,7 +26,7 @@ WHERE transactions IS NOT NULL AND country IN('Canada', 'Israel', 'Australia', '
 
 
 
-### In starting_with_data.md Question 4, the answer was 0.59% of visitors actually bought. That number seems awefully low. Let's verify it.
+### In starting_with_data.md Question 4, the answer was 0.57% of visitors actually bought. That number seems awfully low. Let's verify it.
 
 #Step 1: Calculate the number of distinct visitors.
 
