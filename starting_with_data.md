@@ -62,7 +62,8 @@ FROM all_sessionso) AS subquery;
 
 Answer: 0.57% of distinct visitors to the website made a purchase.
 
-## Update Question 4##
+### Updated Question 4
+
 #As of 7/19/2023, after the QA process, I discovered that there was one visitor who made two transactions. Below is my updated answer and query for Question 4.
 
 SQL Queries:
