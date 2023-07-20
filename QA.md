@@ -15,7 +15,7 @@ Below is my QA process and the SQL queries used to execute it.
 
 #Quality control 20% of the answers for accuracy. For this project, I will verify 2/9 (22%) of the answers.
 
-#In starting_with_questions.md - Question 3, there were 81 transactions. 77 of those transactions were from the United States and each of the other 4 countries listed only had one transaction. Let's verify if that's actually true. 
+### In starting_with_questions.md - Question 3, there were 81 transactions. 77 of those transactions were from the United States and each of the other 4 countries listed only had one transaction. Let's verify if that's actually true. 
 
 SELECT *
 FROM all_sessionso
@@ -26,7 +26,7 @@ WHERE transactions IS NOT NULL AND country IN('Canada', 'Israel', 'Australia', '
 
 
 
-#In starting_with_data.md Question 4, the answer was 0.59% of visitors actually bought. That number seems awefully low. Let's verify it.
+### In starting_with_data.md Question 4, the answer was 0.59% of visitors actually bought. That number seems awefully low. Let's verify it.
 
 #Step 1: Calculate the number of distinct visitors.
 
