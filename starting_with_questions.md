@@ -7,23 +7,23 @@ Answer the following questions and provide the SQL queries used to find the answ
 SQL Queries:
 
 #1A) Preferred Method - By City 
-
+```
 SELECT DISTINCT city, round(AVG(totaltransactionrevenue), 2) as avg_transactionrev_by_city, currencycode, COUNT(totaltransactionrevenue)
 FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY city, currencycode, totaltransactionrevenue
 ORDER BY avg_transactionrev_by_city DESC;
-
+```
 #1B) Preferred Method - By Country
-
+```
 SELECT DISTINCT country, ROUND(AVG(totaltransactionrevenue), 2) as avg_transactionrev_by_country, COUNT(totaltransactionrevenue)
 FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY country, currencycode
 ORDER BY avg_transactionrev_by_country DESC NULLS LAST;
-
+```
 #Bonus Method - one query with WINDOW function 
-
+```
 SELECT DISTINCT city, ROUND(AVG(totaltransactionrevenue), 2) as avg_transactionrev_by_city,
 country, ROUND(AVG(totaltransactionrevenue) OVER(PARTITION BY Country),2) AS avg_transactionrev_by_country,
 currencycode, COUNT(totaltransactionrevenue)
@@ -31,7 +31,7 @@ FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY country, city, currencycode, totaltransactionrevenue
 ORDER BY avg_transactionrev_by_city DESC;
-
+```
 
 Answer:
 
@@ -53,21 +53,21 @@ Answer:
 SQL Queries:
 
 #2A) By City
-
+```
 SELECT DISTINCT city, ROUND(AVG(totaltransactionrevenue/productprice),0) AS av_prodord_city, COUNT(totaltransactionrevenue) AS num_of_transactions
 FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY city
 ORDER BY av_prodord_city DESC;
-
+```
 #2B) By Country
-
+```
 SELECT DISTINCT country, ROUND(AVG(totaltransactionrevenue/productprice),0) AS av_prodord_country, COUNT(totaltransactionrevenue) AS num_of_transactions
 FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY country
 ORDER BY av_prodord_country DESC NULLS LAST;
-
+```
 
 
 Answer:
@@ -98,7 +98,7 @@ Answer:
 SQL Queries:
 
 #3A) City- By WEST COAST
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice AS top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -110,10 +110,10 @@ FROM CTE
 WHERE CTE.city IN('San Francisco', 'Sunnyvale', 'Mountain View', 'Los Angeles', 'San Jose', 'San Bruno', 'Seattle')
 GROUP BY CTE.city, CTE.v2productcategory, CTE.top_prodord_city, CTE.v2productname
 ORDER BY city, CTE.v2productcategory;
-
+```
 
 #3B) City- By Midwest
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice AS top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -125,9 +125,9 @@ FROM CTE
 WHERE CTE.city IN('Columbus', 'Chicago', 'Nashville')
 GROUP BY CTE.city, CTE.v2productcategory, CTE.top_prodord_city, CTE.v2productname
 ORDER BY city, CTE.v2productcategory;
-
+```
 #3C) City- By EAST COAST
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice AS top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -139,9 +139,9 @@ FROM CTE
 WHERE CTE.city IN('Atlanta', 'New York')
 GROUP BY CTE.city, CTE.v2productcategory, CTE.top_prodord_city, CTE.v2productname
 ORDER BY city, CTE.v2productcategory;
-
+```
 #3D) City- By GULF COAST
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice AS top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -153,13 +153,13 @@ FROM CTE
 WHERE CITY IN('Austin', 'Houston')
 GROUP BY CTE.city, CTE.v2productcategory, CTE.top_prodord_city, CTE.v2productname
 ORDER BY city, CTE.v2productcategory;
-
+```
 
 #BY COUNTRY
 
 #3E) Patterns By COUNTRY - Nest
 #Used "OR v2productname LIKE '%Nest%'" because 1 Nest product ordered had an incorrect category name
-
+```
 WITH CTE AS(SELECT Distinct country, v2productname, totaltransactionrevenue/productprice AS prodord_country, v2productcategory,
 RANK() OVER(PARTITION BY country ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -171,9 +171,9 @@ FROM CTE
 WHERE CTE.V2productcategory LIKE '%Nest%' OR v2productname LIKE '%Nest%'
 GROUP BY CTE.country, CTE.v2productcategory, CTE.prodord_country, CTE.v2productname
 ORDER BY country, CTE.v2productcategory;
-
+```
 #3F) Patterns BY COUNTRY - Apparel
-
+```
 WITH CTE AS(SELECT Distinct country, v2productname, totaltransactionrevenue/productprice prodord_country, v2productcategory,
 RANK() OVER(PARTITION BY country ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -186,9 +186,9 @@ WHERE CTE.V2productcategory LIKE ('%pparel%') OR v2productname LIKE '%shirt%' OR
 OR v2productname LIKE 'Men%s' 
 GROUP BY CTE.country, CTE.v2productcategory, CTE.prodord_country, CTE.v2productname
 ORDER BY country, CTE.v2productcategory;
-
+```
 #3G) Patterns By COUNTRY - United States
-
+```
 WITH CTE AS(SELECT Distinct country, v2productname, totaltransactionrevenue/productprice AS prodord_country, v2productcategory,
 RANK() OVER(PARTITION BY country ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -200,9 +200,9 @@ FROM CTE
 WHERE CTE.country = 'United States'
 GROUP BY CTE.country, CTE.v2productcategory, CTE.prodord_country, CTE.v2productname
 ORDER BY country, CTE.v2productcategory;
-
+```
 #3H) Patterns By Country - Product Categories
-
+```
 WITH CTE AS(SELECT Distinct country, v2productname, totaltransactionrevenue/productprice prodord_country, v2productcategory,
 RANK() OVER(PARTITION BY country ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -213,7 +213,7 @@ SELECT CTE.country, CTE.v2productname, ROUND(CTE.prodord_country, 0) AS prodord_
 FROM CTE
 GROUP BY CTE.country, CTE.v2productcategory, CTE.prodord_country, CTE.v2productname
 ORDER BY country, CTE.v2productcategory;
-
+```
 
 Answer:
 
@@ -245,7 +245,7 @@ Answer:
 SQL Queries
 
 #4A) City
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -257,13 +257,13 @@ FROM CTE
 GROUP BY CTE.city, CTE.top_prodord_city, cte.ranks, CTE.v2productname, CTE.v2productcategory
 HAVING CTE.ranks = 1
 ORDER BY city, ranks;
-
+```
 
 #City patterns by region
 #Asumptions that the city names are major city names
 
 #4B) City- By WEST COAST
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -276,9 +276,9 @@ WHERE CTE.city IN('San Francisco', 'Sunnyvale', 'Mountain View', 'Los Angeles', 
 GROUP BY CTE.city, CTE.top_prodord_city, cte.ranks, CTE.v2productname, CTE.v2productcategory
 HAVING CTE.ranks = 1
 ORDER BY city, ranks;
-
+```
 #4C) City- By Mid-WEST
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -291,9 +291,9 @@ WHERE CTE.city IN('Columbus', 'Chicago', 'Nashville')
 GROUP BY CTE.city, CTE.top_prodord_city, cte.ranks, CTE.v2productname, CTE.v2productcategory
 HAVING CTE.ranks = 1
 ORDER BY city, ranks;
-
+```
 #4D) City- By EAST COAST
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -306,9 +306,9 @@ WHERE CTE.city IN('Atlanta', 'New York')
 GROUP BY CTE.city, CTE.top_prodord_city, cte.ranks, CTE.v2productname, CTE.v2productcategory
 HAVING CTE.ranks = 1
 ORDER BY city, ranks;
-
+```
 #4E) City- By GULF COAST
-
+```
 WITH CTE AS(SELECT Distinct city, v2productname, totaltransactionrevenue/productprice top_prodord_city, v2productcategory,
 RANK() OVER(PARTITION BY CITY ORDER BY totaltransactionrevenue/productprice DESC) AS ranks
 FROM all_sessionso
@@ -321,10 +321,10 @@ WHERE CITY IN ('Austin', 'Houston')
 GROUP BY CTE.city, CTE.top_prodord_city, cte.ranks, CTE.v2productname, CTE.v2productcategory
 HAVING CTE.ranks = 1
 ORDER BY city, ranks;
-
+```
 
 #4F) Country
-
+```
 WITH CTE AS(SELECT Distinct country, v2productname, totaltransactionrevenue/productprice top_prodord_country, 
 RANK() OVER(PARTITION BY country ORDER BY totaltransactionrevenue/productprice DESC) AS ranks, v2productcategory
 FROM all_sessionso
@@ -336,7 +336,7 @@ FROM CTE
 GROUP BY CTE.country, CTE.top_prodord_country, cte.ranks, CTE.v2productname, CTE.v2productcategory
 HAVING CTE.ranks = 1
 ORDER BY country, ranks;
-
+```
 
 Answer:
 
@@ -372,21 +372,23 @@ United States - SPF-15 Slim & Slender Lip Balm
 SQL Queries:
 
 #5A) Preferred Method: By City
+```
 SELECT DISTINCT city, SUM(totaltransactionrevenue) as tot_transactionrevenue_by_city, currencycode
 FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY city, currencycode, totaltransactionrevenue
 ORDER BY tot_transactionrevenue_by_city DESC;
-
+```
 #5B) Preferred Method: By Country
+```
 SELECT DISTINCT country, SUM(totaltransactionrevenue) as tot_transaction_by_country, currencycode
 FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY country, currencycode
 ORDER BY tot_transaction_by_country DESC;
-
+```
 #Bonus Method - Utilizing WINDOW function in one query to return both city and country in one table.
-
+```
 SELECT DISTINCT city, SUM(totaltransactionrevenue) as tot_transaction_by_city,
 country, SUM(totaltransactionrevenue) OVER(PARTITION BY Country),
 currencycode
@@ -394,7 +396,7 @@ FROM all_sessionso
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY country, city, currencycode, totaltransactionrevenue
 ORDER BY tot_transaction_by_city DESC;
-
+```
 
 
 Answer:
