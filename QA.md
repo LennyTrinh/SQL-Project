@@ -1,4 +1,4 @@
-What are your risk areas? Identify and describe them.
+Below are the listed risk areas and their descriptions.
 
 1) Some totaltransactionrevenue are smaller than the productprice. See all_sessionso table for visitid = 1476976393. This discrepancy could be due to discounts or the data could have been inaccurate due to being supplied by a third party.
 2) What if a city was labelled under an incorrect country? Ideally, this would be caught in cleaning. However, after quering the first time, I found that for fullvisitorid: 8379929056656388083, the country listed for New York was Canada. This issue has been resolved now using UPDATE clause.
